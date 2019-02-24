@@ -2,6 +2,7 @@ import UIKit
 
 class Solution {
     /*
+     反转字符串
      编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
      不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
      你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
@@ -19,6 +20,7 @@ class Solution {
     }
 
     /*
+     整数反转
      给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
      示例 1:
      输入: 123
@@ -52,6 +54,7 @@ class Solution {
     }
 
     /*
+     字符串中的第一个唯一字符
      给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
      案例:
      s = "leetcode"
@@ -80,6 +83,7 @@ class Solution {
     }
 
     /*
+     有效的字母异位词
      给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的一个字母异位词。
      示例 1:
      输入: s = "anagram", t = "nagaram"
@@ -106,5 +110,37 @@ class Solution {
         }
         if s.count != t.count { return false }
         return createMap(str: s) == createMap(str: t)
+    }
+
+    /*
+     验证回文字符串
+     给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+     说明：本题中，我们将空字符串定义为有效的回文串。
+     示例 1:
+     输入: "A man, a plan, a canal: Panama"
+     输出: true
+     示例 2:
+     输入: "race a car"
+     输出: false
+    */
+    func isPalindrome(_ s: String) -> Bool {
+        var array: [Int] = []
+        for scalar in s.unicodeScalars {
+            var asciiCode = Int(scalar.value)
+            if asciiCode >= 97 && asciiCode <= 122 {
+                asciiCode -= 32
+            }
+            if (asciiCode >= 48 && asciiCode <= 57) || (asciiCode >= 65 && asciiCode <= 90) {
+                array.append(asciiCode)
+            }
+        }
+        for i in 0..<(array.count / 2) {
+            if array[i] == array[array.count - 1 - i] {
+                continue
+            } else {
+                return false
+            }
+        }
+        return true
     }
 }
