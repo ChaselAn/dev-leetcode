@@ -50,4 +50,32 @@ class Solution {
         let resInt = Int32(finalStr) ?? 0
         return Int(isMinus ? -resInt : resInt)
     }
+
+    /*
+     给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
+     案例:
+     s = "leetcode"
+     返回 0.
+     s = "loveleetcode",
+     返回 2.
+     注意事项：您可以假定该字符串只包含小写字母。
+    */
+    func firstUniqChar(_ s: String) -> Int {
+        var map: [Character: (Int, Int)] = [:]
+        for (i, c) in s.enumerated() {
+            if let info = map[c] {
+                map[c] = (i, info.1 + 1)
+            } else {
+                map[c] = (i, 1)
+            }
+        }
+        var index: Int?
+        for info in map {
+            let i = info.value.0
+            if info.value.1 == 1 {
+                index = index == nil ? i : min(i, index!)
+            }
+        }
+        return index ?? -1
+    }
 }
