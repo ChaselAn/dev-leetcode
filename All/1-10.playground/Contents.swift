@@ -101,4 +101,92 @@ class Solution {
         }
         return dummyHead.next
     }
+
+    /*
+     3. 无重复字符的最长子串
+     给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+
+     示例 1:
+
+     输入: "abcabcbb"
+     输出: 3
+     解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+     示例 2:
+
+     输入: "bbbbb"
+     输出: 1
+     解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+     示例 3:
+
+     输入: "pwwkew"
+     输出: 3
+     解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+               请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+     */
+    func lengthOfLongestSubstring(_ s: String) -> Int {
+        switch s.count {
+        case 1:
+            // 暴力解
+            func allUnique(s: String, start: Int, end: Int) -> Bool {
+                var set = Set<Character>()
+                for i in start..<end {
+                    let char = s[s.index(s.startIndex, offsetBy: i)]
+                    if set.contains(char) { return false }
+                    set.insert(char)
+                }
+                return true
+            }
+            let n = s.count
+            var ans = 0
+            for i in 0..<n {
+                for j in (i + 1)...n {
+                    if allUnique(s: s, start: i, end: j) {
+                        ans = max(ans, j - i)
+                    }
+                }
+            }
+            return ans
+        case 2:
+            // 滑动窗口
+            var i = 0
+            var j = 0
+            var set = Set<Character>()
+            var ans = 0
+            while j < s.count, i < s.count {
+                let char = s[s.index(s.startIndex, offsetBy: j)]
+                if !set.contains(char) {
+                    set.insert(char)
+                    j += 1
+                    ans = max(ans, j - i)
+                } else {
+                    let char = s[s.index(s.startIndex, offsetBy: i)]
+                    set.remove(char)
+                    i += 1
+                }
+            }
+            return ans
+        case 3:
+            // 优化的滑动窗口
+            let n = s.count
+            var ans = 0
+            var map = [Character: Int]()
+            var i = 0
+            for j in 0..<n {
+                let char = s[s.index(s.startIndex, offsetBy: j)]
+                if let mapValue = map[char] {
+                    i = max(mapValue, i)
+                }
+                ans = max(ans, j - i + 1)
+                map[char] = j + 1
+            }
+            return ans
+        default:
+            return -1
+        }
+    }
+
+    /*
+     
+     */
 }
+
